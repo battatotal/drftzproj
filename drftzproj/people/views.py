@@ -10,3 +10,4 @@ class PeopleApiView(generics.CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = PeopleSerializer
     permission_classes = (OnlyOneProfile,)
+

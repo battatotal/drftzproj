@@ -7,6 +7,6 @@ urlpatterns = [
     path('api/clients/drf-auth/', include('rest_framework.urls')),
     #path('people/', include('people.urls')),
     path('api/clients/create/', PeopleApiView.as_view()),
-    path('api/clients/create/<int:pk>/', PeopleApiView.as_view())
+    path('api/clients/create/<int:pk>/', PeopleApiView.as_view()),
 ]
 
