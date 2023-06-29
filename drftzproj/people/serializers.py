@@ -7,4 +7,6 @@ class PeopleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ('date_of_birth','photo','gender','user')
+

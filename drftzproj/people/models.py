@@ -11,6 +11,8 @@ class Profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     gender = models.CharField(max_length=255, choices=genders, default="Male")
+    liked = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
+
 
     def __str__(self):
         return f'Профиль пользователя {self.user.username}'

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from people.views import PeopleApiView
+from people.views import PeopleApiView, LikedApiView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -8,5 +8,6 @@ urlpatterns = [
     #path('people/', include('people.urls')),
     path('api/clients/create/', PeopleApiView.as_view()),
     path('api/clients/create/<int:pk>/', PeopleApiView.as_view()),
+    path('api/clients/<int:id>/match/', LikedApiView.as_view()),
 ]
 
