@@ -1,14 +1,27 @@
+import django.contrib.auth.models
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
 from .permissions import OnlyOneProfile
 
-from .serializers import PeopleSerializer
+from .serializers import PeopleSerializer, PeopleListSerializer, UserSerializer
 from .models import Profile
 
 from django.core.mail import send_mail
+
+from django.contrib.auth.models import User
+from django_filters import rest_framework as filters
+
+
+# class UserFilter(filters.FilterSet):
+#
+#     class Meta:
+#         model = User
+#         fields = ['first_name', 'last_name']
+
 
 
 class PeopleApiView(generics.CreateAPIView):
@@ -16,6 +29,22 @@ class PeopleApiView(generics.CreateAPIView):
     serializer_class = PeopleSerializer
     permission_classes = (OnlyOneProfile,)
 
+
+
+class PeopleApiList(generics.ListAPIView):
+
+
+    queryset = Profile.objects.all()
+    serializer_class = PeopleListSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    filter_backends = [DjangoFilterBackend]
+    # filterset_class = UserFilter
+    filterset_fields = ["gender",]
+
+    def get_queryset(self):
+        #чтобы отображать всех пользователей кроме текущего
+        user = self.request.user
+        return Profile.objects.exclude(user_id=user)
 
 
 

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'people.apps.PeopleConfig',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
