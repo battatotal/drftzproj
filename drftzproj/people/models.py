@@ -12,7 +12,11 @@ class Profile(models.Model):
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     gender = models.CharField(max_length=255, choices=genders, default="Male")
     liked = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
-
+    #Добавил широту и долготу
+    longitude = models.FloatField(blank=True)
+    latitude = models.FloatField(blank=True)
+    #Добавил поле с расстоянием
+    distance = models.FloatField(blank=True, verbose_name="Расстояние")
 
     def __str__(self):
         return f'Профиль пользователя {self.user.username}'

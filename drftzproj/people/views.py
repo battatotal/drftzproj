@@ -9,18 +9,22 @@ from .permissions import OnlyOneProfile
 
 from .serializers import PeopleSerializer, PeopleListSerializer, UserSerializer
 from .models import Profile
+from .services import calc_dist
 
 from django.core.mail import send_mail
 
-from django.contrib.auth.models import User
 from django_filters import rest_framework as filters
 
 
-# class UserFilter(filters.FilterSet):
-#
-#     class Meta:
-#         model = User
-#         fields = ['first_name', 'last_name']
+
+
+class DistFilter(filters.FilterSet):
+    min_dist = filters.NumberFilter(field_name="distance", lookup_expr='lte')
+
+    class Meta:
+        model = Profile
+        fields = ['min_dist', 'gender']
+
 
 
 
@@ -33,18 +37,24 @@ class PeopleApiView(generics.CreateAPIView):
 
 class PeopleApiList(generics.ListAPIView):
 
-
     queryset = Profile.objects.all()
     serializer_class = PeopleListSerializer
     permission_classes = (permissions.IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
-    # filterset_class = UserFilter
-    filterset_fields = ["gender",]
+    filterset_class = DistFilter
+    # filterset_fields = ["gender",]
+
 
     def get_queryset(self):
-        #чтобы отображать всех пользователей кроме текущего
-        user = self.request.user
-        return Profile.objects.exclude(user_id=user)
+        #заполняю поле distance для каждого юзера кроме текущего
+        current_user = Profile.objects.get(user_id=self.request.user.id)
+        userlist = Profile.objects.exclude(user_id=current_user.id)
+        for usr in userlist:
+            dst = calc_dist(current_user.latitude, current_user.longitude, usr.latitude, usr.longitude)
+            Profile.objects.filter(user_id=usr.user_id).update(distance=dst)
+
+        #Возвращаю всех юзеров кроме текущего
+        return Profile.objects.exclude(user_id=current_user.user_id)
 
 
 
