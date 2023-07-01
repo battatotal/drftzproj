@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from people.views import PeopleApiView, LikedApiView, PeopleApiList
+from people.views import PeopleApiView, LikedApiView, PeopleApiList, mainview
 
 urlpatterns = [
+    path('', mainview, name="main"),
     path('admin/', admin.site.urls),
     path('api/clients/drf-auth/', include('rest_framework.urls')),
     #path('people/', include('people.urls')),

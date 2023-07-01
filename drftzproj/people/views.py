@@ -14,7 +14,12 @@ from .services import calc_dist
 from django.core.mail import send_mail
 
 from django_filters import rest_framework as filters
+from django.http import HttpResponse
 
+
+
+def mainview(request):
+    return HttpResponse("<h1>Админ-панель: admin/12345</h1>")
 
 
 
