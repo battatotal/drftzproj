@@ -3,6 +3,7 @@ from rest_framework.permissions import SAFE_METHODS
 
 
 class OnlyOneProfile(permissions.BasePermission):
+    #Разрешение на создание только одного профиля для юзера
 
     def has_permission(self, request, view):
         return bool(

@@ -6,6 +6,8 @@ from .models import Profile
 
 
 class PeopleSerializer(serializers.ModelSerializer):
+    #сериализатор профиля
+    #скрытое поле
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
@@ -24,6 +26,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PeopleListSerializer(serializers.ModelSerializer):
+    #Сериализатор списка профилей
+
 
     user = UserSerializer()
 

@@ -19,11 +19,15 @@ from django.http import HttpResponse
 
 
 def mainview(request):
+    #главная страница
     return HttpResponse("<h1>Админ-панель: admin/12345</h1>")
 
 
 
 class DistFilter(filters.FilterSet):
+    #Фильтр дистанции
+
+
     min_dist = filters.NumberFilter(field_name="distance", lookup_expr='lte')
 
     class Meta:
@@ -34,6 +38,7 @@ class DistFilter(filters.FilterSet):
 
 
 class PeopleApiView(generics.CreateAPIView):
+    #создание и получение пользователя
     queryset = Profile.objects.all()
     serializer_class = PeopleSerializer
     permission_classes = (OnlyOneProfile,)
@@ -41,6 +46,8 @@ class PeopleApiView(generics.CreateAPIView):
 
 
 class PeopleApiList(generics.ListAPIView):
+    #Возвращает список пользователей. Перегруженный метод get_queryset заполняет для пользователей поле
+    #distance, для возможности фильтрации
 
     queryset = Profile.objects.all()
     serializer_class = PeopleListSerializer
@@ -64,6 +71,8 @@ class PeopleApiList(generics.ListAPIView):
 
 
 class LikedApiView(APIView):
+    #Позволяет ставить пользователю лайк, и если текущий пользователь уже в "лайках" у понравившегося пользователя
+    #то пользователи получат мейлы друг друга
 
     def get(self, request, **kwargs):
         user_id = request.user.id

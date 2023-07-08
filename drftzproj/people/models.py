@@ -6,6 +6,7 @@ from drftzproj.settings import BASE_DIR
 
 
 class Profile(models.Model):
+    #Модель профайла, по сути дополнение для стандарной джанговской User
     genders = [("Male","Male"), ("Female", "Female")]
     user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
@@ -22,6 +23,7 @@ class Profile(models.Model):
         return f'Профиль пользователя {self.user.username}'
 
 
+    #Перегоуженный метод Save добавляет водяной знак при регистрации профиля
     def save(self,*args, **kwargs):
         # добавляю водяной знак
         super().save(*args,**kwargs)
